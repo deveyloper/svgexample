@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <script src="jquery-1.11.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+    <script>
+        function fillArray(indis, player) {
+            pointArray[indis % 4][parseInt(indis / 4)] = player;
+        }
+
+        function createArray(length) {
+            var arr = new Array(length || 0),
+                i = length;
+
+            if (arguments.length > 1) {
+                var args = Array.prototype.slice.call(arguments, 1);
+                while (i--) arr[length - 1 - i] = createArray.apply(this, args);
+            }
+
+            return arr;
+        }
+        var pointArray = createArray(4, 4);
+        $(document).ready(function () {
+            var $svg = $("<svg width='370' height='370' id='svg1'></svg>");
+            var $rect = $('  <rect width="370" height="370" style="fill:rgb(182,182,182);stroke-width:3;stroke:rgb(0,0,0)" />')
+            $rect.appendTo($svg);
+            for (i = 0; i < 4; i++) {
+                for (j = 0; j < 4; j++) {
+                    var $circle = $('<circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" class="crc"></circle>');
+                    $circle.attr("id", "circle" + (i * 4 + j));
+                    $circle.attr("cx", 50 + (90 * j));
+                    $circle.attr("cy", 50 + (90 * i));
+                    $circle.appendTo($svg);
+                }
+            }
+            $svg.appendTo($("#dv1"));
+            $("body").html($("body").html());
+			
+            $(".crc").mouseenter(function () {
+                var $x = $(this).attr("cx");
+                $("circle[class=crc][cx=" + $x + "]").last().attr("opacity", "0.25");
+            }).mouseleave(function () {
+                var $x = $(this).attr("cx");
+                $("circle[class=crc][cx=" + $x + "]").last().attr("opacity", "1");
+            });
+			
+            $(".crc").click(function () {
+                var $x = $(this).attr("cx");
+                var $player = $("#hdnTurn").val();
+                var $circle = $("circle[class=crc][cx=" + $x + "]").last();
+                if ($circle.length) {
+                    var $circleID = $circle.attr("id");
+                    var $id = $circleID.substr(6, $circleID.length - 5);
+                    if ($player == 1) {
+                        $circle.attr("class", "crc-first-player");
+                        $("#hdnTurn").val(2);
+                        fillArray($id, 1);
+                    } else {
+                        $circle.attr("class", "crc-second-player");
+                        $("#hdnTurn").val(1);
+                        fillArray($id, 2);
+                    }
+                    $circle.attr("opacity", "1");
+                    if ($(".crc").length == 0) {
+                        alert("Tamam");
+                        $("circle").attr("class", "crc");
+						$(".crc").attr("opacity","1");
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id="dv1" class="mTopLeft75 w400">
+        <center>
+            <h1>My first SVG</h1>
+        </center>
+        <input type="hidden" id="hdnTurn" value="1"></input>
+    </div>
+    </div>
+</body>
+
+</html>
