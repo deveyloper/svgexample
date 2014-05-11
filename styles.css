@@ -1,0 +1,19 @@
+.mTopLeft75{
+	margin: 50px 0 0 50px;
+}
+.crc{
+	fill:rgb(223, 215, 41);
+}
+.crc-stable{
+	fill:rgb(223, 215, 41);
+}
+.crc-first-player{
+	fill:rgb(20, 124, 45);
+}
+.crc-second-player{
+	fill:rgb(216, 214, 182);
+}
+svg
+{
+	float:left;
+}
